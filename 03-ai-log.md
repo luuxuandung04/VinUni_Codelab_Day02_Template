@@ -1,3 +1,5 @@
+Beautiful-Trần Thu Phương-26ai.phuongtt2@vinuni.edu.vn
+
 1. Giúp được gì
 Cấu trúc hóa nhanh một ý tưởng mơ hồ: từ một prompt brainstorm chung chung ra được 5 pain point có khung rõ ràng (vấn đề — tổn thất — hướng AI).
 Vai trò "CFO khắt khe" tạo áp lực phản biện thật: chỉ ra 3 lỗ hổng logic (incentive tài xế, feedback loop tự phá hoại) mà nếu tự viết một mình, dễ bị bỏ sót vì đang ở vai "người đề xuất" chứ không phải "người duyệt ngân sách".

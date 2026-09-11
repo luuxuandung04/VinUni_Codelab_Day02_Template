@@ -1,3 +1,5 @@
+Beautiful-Trần Thu Phương-26ai.phuongtt2@vinuni.edu.vn
+
 AI Prompts — Brainstorm bài toán vận hành: Xanh SM
 Mảng đã chọn: Xanh SM (taxi điện & dịch vụ gọi xe)
 1. Danh sách 5 pain point vận hành tiềm năng
