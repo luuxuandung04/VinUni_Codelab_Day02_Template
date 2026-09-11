@@ -1,3 +1,5 @@
+Beautiful-Trần Thị Lan-26ai.lantt@vinuni.edu.vn
+
 # Báo cáo Nhật ký AI (`03-ai-log.md`)
 
 ## 1. Đóng góp cá nhân thực tế

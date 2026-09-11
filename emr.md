@@ -7,7 +7,6 @@
 
 ## 🏛️ Bối cảnh: Tôi là ai?
 
-Tôi là **Đại diện Nhóm KHDL1**, sinh viên ngành Khoa học Dữ liệu Y tế tại Trường Đại học Y tế Công cộng (HUPH). Nhóm chúng tôi được giao nhiệm vụ phối hợp với **Phòng Quản lý Chất lượng và Khoa Khám bệnh** để tìm kiếm các cơ hội tối ưu hóa quy trình hành chính y tế bằng trí tuệ nhân tạo.
 
 Thông qua khảo sát thực tế tại các phòng khám ngoại trú, chúng tôi nhận thấy các bác sĩ và nhân sự y tế đang phải chịu áp lực ghi chép hồ sơ bệnh án điện tử (EMR) khổng lồ. Việc này dẫn đến tình trạng thường xuyên xảy ra lỗi đánh máy (`typo`), bỏ sót trường thông tin bắt buộc (`missing field`) hoặc vi phạm quy chuẩn tuân thủ bảo hiểm y tế (`compliance issue`), làm gia tăng thời gian chờ đợi của người bệnh và rủi ro xuất toán bảo hiểm. Bài toán chúng tôi mang đến buổi Lab hôm nay xuất phát từ chính nỗi đau vận hành cấp bách này.
 

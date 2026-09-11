@@ -1,3 +1,5 @@
+Beautiful-Trần Thị Lan-26ai.lantt@vinuni.edu.vn
+
 # Deliverable Example — Vin Smart Future (GSM / Xanh SM Use Case)
 
 > **Ví dụ bài nộp hoàn chỉnh từ đầu đến cuối lab, đã được định vị lại theo Rubric mới và bối cảnh vận hành của Vin Smart Future.**

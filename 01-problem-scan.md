@@ -1,3 +1,5 @@
+Beautiful-Trần Thị Lan-26ai.lantt@vinuni.edu.vn
+
 # Báo cáo cá nhân: 5 Bài toán & Quick Problem Cards (Hệ thống Y tế Vinmec / Vingroup)
 
 ## 1. Danh sách 5 bài toán tại hệ thống y tế Vinmec (Vingroup)
