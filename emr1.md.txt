@@ -1,0 +1,21 @@
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│ Bước 1       │     │ Bước 2       │     │ Bước 3       │     │ Bước 4       │
+│ Bác sĩ nhập  │     │ Lưu trữ hồ   │     │ Phòng QLCL   │     │ Phát hiện lỗi│
+│ nội dung     │ ──→ │ sơ lên hệ    │ ──→ │ rà soát ngẫu │ ──→ │ (Typo, Thiếu │
+│ bệnh án (EMR)│     │ thống EMR    │     │ nhiên (Sample│     │ trường, BHYT)│
+│              │     │              │     │              │     │              │
+│ Ai: Bác sĩ   │     │ Ai: Hệ thống │     │ Ai: Nhân viên│     │ Ai: Nhân viên│
+│ ⏱ 10 phút   │     │ ⏱ 1 giây    │     │ ⏱ 15 phút 🔴 │     │ ⏱ 10 phút 🔴 │
+└──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
+                                                                      │
+                                                                      ▼
+                                                               ┌──────────────┐
+                                                               │ Bước 5       │
+                                                               │ Yêu cầu bác  │
+                                                               │ sĩ sửa và    │
+                                                               │ nộp lại      │
+                                                               │ Ai: Cả hai   │
+                                                               │ ⏱ 15 phút 🔴 │
+                                                               └──────────────┘
+🔴 = Bottlenecks
+⏱ Tổng thời gian vòng đời xử lý một hồ sơ lỗi: Lên tới 40 phút/hồ sơ.
