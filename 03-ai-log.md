@@ -1,78 +1,61 @@
-﻿# 03-ai-log.md — AI Interaction Log (vukhai248)
+﻿# 03-ai-log.md — Nhật ký tương tác AI (vukhai248)
 
-> Ghi lại cách AI được sử dụng trong quá trình nghiên cứu và xây dựng giải pháp, bao gồm những điểm hữu ích, lỗi/hallucination phát sinh và cách khắc phục.
-
----
-
-## 1. AI đã hỗ trợ những gì
-
-### 1.1 Research bài toán Xanh SM — điều phối xe & trạm sạc
-
-**Công cụ sử dụng:** Gemini 3.1 Pro, ChatGPT
-
-**Việc AI giúp được:**
-
-- **Brainstorming các bài toán Vingroup:** Khi đưa danh sách các công ty thành viên (Xanh SM, VinFast, Vinhomes, Vinmec), AI gợi ý nhanh các luồng workflow thủ công có thể cải thiện bằng AI — đặc biệt là bài toán điều phối tài xế và quản lý trạm sạc.
-- **Xây dựng workflow 3–5 bước:** AI giúp cấu trúc lại workflow thủ công của điều phối viên Xanh SM thành dạng bước tuần tự rõ ràng (gọi báo hết pin → tra GPS → tra trạm trống → soạn SMS → gọi cứu hộ), từ đó dễ xác định bottleneck ở bước 3–4.
-- **Gợi ý kiến trúc giải pháp:** AI gợi ý pattern LLM + HITL (Human-in-the-loop) phù hợp với bài toán dispatcher cần duyệt trước khi gửi thông tin cho tài xế — tránh rủi ro AI tự gửi thông tin sai.
-- **Soạn thảo SYSTEM_PROMPT cho prompt_prototype.py:** AI đề xuất cấu trúc prompt có ranh giới an toàn (output [DRAFT_ONLY], giới hạn trạm < 5 km, bắt buộc escalate khi pin < 5%).
-- **Phân tích bài toán Vinhomes route khiếu nại:** AI giúp ước lượng tỉ lệ route sai (~30%) và thời gian phản hồi (~12 giờ) dựa trên pattern tổng đài CSKH bất động sản điển hình — cần gắn nhãn "ước tính" vì chưa có dữ liệu thực địa Vinhomes.
+> Phản ánh quá trình sử dụng AI làm trợ lý đồng hành trong Lab 02: nêu rõ AI giúp gì, sai/hallucination ở đâu, và đã sửa prompt/ranh giới ra sao.
 
 ---
 
-### 1.2 Hỗ trợ xây dựng Quick Problem Cards
+## 1. AI đã giúp gì
 
-AI giúp kiểm tra tính nhất quán của 3 Quick Problem Cards: đảm bảo mỗi card có đủ actor, workflow 3–5 bước, bottleneck có số thời gian, AI solution gắn đúng bước, metric có số và kiến trúc được gắn nhãn (Rule/LLM/Agent).
+### Giai đoạn Phase 1 — SCAN
 
----
+Khi bắt đầu liệt kê bài toán cho 5 công ty thành viên Vingroup, AI được dùng như một "partner brainstorm" — đưa vào danh sách công ty và yêu cầu gợi ý các luồng vận hành thủ công có khả năng tối ưu bằng AI. Kết quả hữu ích: AI gợi ý nhanh pattern lặp lại nhiều trong ngành vận tải điện (điều phối tài xế, quản lý sạc) và bất động sản (phân loại khiếu nại cư dân), giúp định hướng chọn được 5 bài toán đủ đa dạng cho bảng SCAN trong `01-problem-scan.md`.
 
-## 2. Lỗi / Hallucination phát sinh
+### Giai đoạn Phase 2 — QUICK PROBLEM CARDS
 
-### Lỗi 1: Số liệu về trạm sạc VinFast bịa đặt
+AI giúp cấu trúc hóa 3 Quick Problem Cards theo đúng khung yêu cầu: actor, workflow 3–5 bước, bottleneck có số thời gian, điểm AI có thể can thiệp, metric có số, và kiến trúc (Rule/LLM/Agent). Cụ thể với Card #2 (Xanh SM — sạc pin), AI đã giúp phân tách rõ 5 bước tuần tự và xác định bước 3–4 là bottleneck chính (tra tay trạm trống + soạn SMS mất 10–12 phút/lượt).
 
-**Mô tả:** Khi hỏi "Có bao nhiêu trạm sạc VinFast tại Hà Nội?", AI (ChatGPT-4o) trả lời cụ thể "hơn 150 trạm sạc tại 80+ địa điểm ở Hà Nội". Số liệu này nghe có vẻ hợp lý nhưng không trích dẫn nguồn và không thể xác minh qua vinfastauto.com hay vinfast.vn.
+### Giai đoạn Phase 3/4 — Workflow & Prompt Boundary
 
-**Rủi ro:** Nếu đưa con số này vào báo cáo như một fact, sẽ bị đánh giá là số liệu bịa (unfounded claim).
-
-**Cách khắc phục:**
-- Sửa prompt: "Chỉ trả lời nếu có thể trích dẫn URL nguồn cụ thể. Nếu không chắc, hãy nói 'cần verify thực địa' thay vì đưa con số."
-- Trong 01-problem-scan.md, các số liệu chưa có nguồn được gắn chú thích (cần verify thực địa) hoặc chỉ dùng nguồn chính thức đã kiểm tra (vinfastauto.com — phí đỗ quá giờ 1.000đ/phút từ phút 31).
+AI hỗ trợ đề xuất kiến trúc giải pháp `Rule + LLM Feature` cho bài toán điều phối xe hotspot, và giải thích lý do không cần dùng Agent tự trị (quy trình cố định, bắt buộc HITL). AI cũng đề xuất các ràng buộc an toàn cho `SYSTEM_PROMPT`: output phải gắn nhãn `[DRAFT_ONLY]`, pin < 5% phải `dispatch_mobile_charger`, không đề xuất trạm > 5km.
 
 ---
 
-### Lỗi 2: AI đề xuất metric quá lạc quan, thiếu cơ sở
+## 2. AI sai / Hallucination phát sinh
 
-**Mô tả:** Khi được yêu cầu đề xuất metric thành công cho bài toán điều phối xe Xanh SM, AI đưa ra "giảm thời gian chờ từ 15 phút xuống dưới 2 phút" — một con số không thực tế với giải pháp dự báo + điều phối trước.
+### Lỗi 1 — Bịa số liệu không có nguồn
 
-**Rủi ro:** Metric quá lạc quan làm giảm độ tin cậy của toàn bộ phân tích. Reviewer/giảng viên có thể thấy đây là "ước lượng AI không có cơ sở thực tế".
+**Vấn đề:** Khi hỏi số lượng trạm sạc VinFast tại Hà Nội, AI trả về một con số cụ thể nghe rất hợp lý. Không có trích dẫn URL, không thể xác minh. Nếu dùng ngay vào báo cáo như một fact sẽ là số liệu bịa (unfounded claim).
 
-**Cách khắc phục:**
-- Sửa prompt: "Đề xuất metric thực tế, so sánh với benchmark ngành ride-hailing (Grab, Be tại Việt Nam). Gắn nhãn rõ 'ước tính' nếu không có dữ liệu thực địa Xanh SM."
-- Điều chỉnh metric trong Quick Problem Card #1: thời gian chờ từ 12 min → dưới 7 min (hợp lý hơn cho bối cảnh điều phối trước 15–20').
-- Quick Problem Card #2 (trạm sạc): 15 min → dưới 3 min — giữ nguyên vì bước soạn SMS và tra tay chiếm phần lớn thời gian, hoàn toàn tự động hóa được.
+**Cách sửa prompt:** Thêm ràng buộc vào câu hỏi: *"Chỉ trả lời nếu có thể trích dẫn nguồn cụ thể. Nếu không có nguồn, trả lời 'cần verify thực địa' thay vì đưa số."* Kết quả: các số liệu không có nguồn đều bị loại khỏi bảng SCAN, thay bằng ghi chú `(cần verify thực địa)`. Chỉ giữ lại số liệu lấy từ nguồn chính thức có thể kiểm tra (vd: phí đỗ quá giờ 1.000đ/phút từ phút 31 — nguồn vinfastauto.com).
 
 ---
 
-### Lỗi 3: Hallucination về thời gian phản hồi Vinhomes
+### Lỗi 2 — Metric quá lạc quan, không có cơ sở thực tế
 
-**Mô tả:** AI tự điền "thời gian phản hồi trung bình 24–48 giờ" cho khiếu nại Vinhomes mà không có nguồn. Thực tế, thông tin trên market.vinhomes.vn chỉ nêu "quy định 08 giờ làm việc" — không phải 24–48 giờ.
+**Vấn đề:** Khi yêu cầu đề xuất metric thành công cho bài toán điều phối xe Xanh SM, AI đưa ra con số cải thiện rất lớn (ví dụ giảm thời gian chờ từ 15 phút xuống dưới 2 phút). Con số này không thực tế với giải pháp dự báo + điều phối trước vì còn phụ thuộc vào giao thông thực địa và thời gian dispatcher duyệt.
 
-**Cách khắc phục:**
-- Sửa prompt với ranh giới rõ: "Ưu tiên dùng thông tin từ URL đã cung cấp. Không tự điền số liệu ngoài phạm vi tài liệu được cấp."
-- Cập nhật Quick Problem Card #3: dùng "phản hồi 12h → dưới 1h" thay vì con số AI bịa.
+**Cách sửa prompt:** Thêm ngữ cảnh: *"Đề xuất metric thực tế, có so sánh với benchmark ngành ride-hailing tương tự. Gắn nhãn 'ước tính' nếu không có dữ liệu thực địa."* Sau khi điều chỉnh, metric trong Quick Problem Card #1 được cập nhật thực tế hơn: thời gian chờ từ 12 phút → dưới 7 phút, tỉ lệ hủy từ ~25% → dưới 12% — phù hợp với bối cảnh điều phối trước 15–20 phút.
 
 ---
 
-## 3. Tổng kết — Ranh giới sử dụng AI
+### Lỗi 3 — Hallucination về chính sách nội bộ công ty
 
-| Phù hợp để dùng AI | Không nên để AI tự quyết |
+**Vấn đề:** Khi phân tích bài toán Vinhomes route khiếu nại (Card #3), AI tự điền thời gian phản hồi trung bình cao hơn nhiều so với quy định thực tế. Tuy nhiên, thông tin trên market.vinhomes.vn ghi rõ quy định phản hồi trong 08 giờ làm việc — khác hoàn toàn với con số AI đưa ra.
+
+**Cách sửa ranh giới:** Cung cấp URL nguồn trực tiếp vào câu hỏi và thêm ràng buộc: *"Ưu tiên thông tin từ URL đã cung cấp. Không tự điền số liệu về chính sách nội bộ doanh nghiệp khi không có tài liệu được cấp."* Sau khi sửa, Quick Problem Card #3 dùng đúng số liệu từ nguồn: phản hồi trong quy định 08 giờ làm việc, với mục tiêu AI giúp rút xuống dưới 1 giờ.
+
+---
+
+## 3. Tổng kết — Ranh giới sử dụng AI trong bài
+
+| Dùng AI được | Không để AI tự quyết |
 |---|---|
-| Brainstorm bài toán, gợi ý workflow | Cung cấp số liệu cụ thể làm fact |
-| Cấu trúc hóa nội dung, draft template | Xác nhận số liệu thực địa doanh nghiệp |
-| Soạn thảo prompt, kiểm tra logic | Đưa ra metric cuối cùng không có nguồn |
-| Đề xuất kiến trúc giải pháp (Rule/LLM/Agent) | Thay thế research thực địa / phỏng vấn stakeholder |
+| Brainstorm bài toán, gợi ý workflow | Cung cấp số liệu thực địa làm fact |
+| Cấu trúc hóa nội dung, soạn template | Xác nhận chính sách nội bộ doanh nghiệp |
+| Kiểm tra logic prompt, đề xuất kiến trúc | Đưa ra metric cuối không có nguồn cơ sở |
+| Draft SYSTEM_PROMPT và test boundary | Thay thế phỏng vấn / quan sát thực địa |
 
-> **Nguyên tắc áp dụng xuyên suốt:** Mọi số liệu do AI sinh ra đều được gắn nhãn (ước tính — cần verify) cho đến khi tìm được nguồn chính thức hoặc dữ liệu thực địa xác nhận.
+> Nguyên tắc xuyên suốt: mọi số liệu do AI sinh ra đều được gắn nhãn *(ước tính — cần verify)* cho đến khi có nguồn chính thức hoặc dữ liệu thực địa xác nhận. Ranh giới này áp dụng nhất quán từ bảng SCAN (01) đến workflow diagram (04) và prompt prototype.
 
 ---
 
